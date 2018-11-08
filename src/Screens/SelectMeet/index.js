@@ -78,7 +78,8 @@ class selectMeet extends Component {
                         showPeople: false,
                         meetingPerson: {
                             fullname: this.state.userListArray[index].fullname,
-                            pictures: this.state.userListArray[index].profilePicturesLink
+                            pictures: this.state.userListArray[index].profilePicturesLink,
+                            uid : this.state.userListArray[index].uid
                         }
                     })
                 } else {
@@ -118,7 +119,7 @@ class selectMeet extends Component {
                 />
                 }
 
-                {this.state.showPeople === false && <MeetLocation personDetails={this.state.meetingPerson} />}
+                {this.state.showPeople === false && <MeetLocation myDetails={this.state.myInfo} personDetails={this.state.meetingPerson} />}
             </Fragment >
         )
     }

@@ -4,6 +4,8 @@ import React, { Component, Fragment } from 'react';
 import Directions from './Directions'
 import firebase from '../../Config/firebase'
 
+
+
 // Button
 import Button from '@material-ui/core/Button';
 
@@ -20,6 +22,11 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 // Fetching Data from Server
 import Axios from 'axios'
+
+
+const database = firebase.database().ref()
+
+
 
 class MeetLocation extends Component {
     constructor() {
@@ -46,6 +53,7 @@ class MeetLocation extends Component {
             firebase.auth().onAuthStateChanged((myProfile) => {
                 if (myProfile) {
                     const uid = myProfile.uid;
+
                     firebase.database().ref('meetings/' + uid).push({
                         VenueName: this.state.VenueName,
                         VenueAdd: this.state.VenueAdd,
@@ -54,8 +62,22 @@ class MeetLocation extends Component {
                         meetingDate: this.state.meetingDate,
                         meetingTime: this.state.meetingTime,
                         status: 'Pending'
-                    })
-                    window.location.pathname = '/Home';
+                    }, (success) => {
+                        debugger
+                        console.log(this.props.myDetails)
+                        database.child('requests/').child(this.props.myDetails.uid).push({
+                            VenueName: this.state.VenueName,
+                            VenueAdd: this.state.VenueAdd,
+                            personName: this.props.myDetails.fullname,
+                            pictures: this.props.myDetails.profilePicturesLink,
+                            meetingDate: this.state.meetingDate,
+                            meetingTime: this.state.meetingTime,
+
+                        }, () => window.location.pathname = '/Home')
+
+
+                    }
+                    )
                 }
             })
         } else {

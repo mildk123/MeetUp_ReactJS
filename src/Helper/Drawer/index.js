@@ -11,6 +11,7 @@ import MailIcon from '@material-ui/icons/Mail';
 // Firebase
 import firebase from '../../Config/firebase'
 
+
 class SwipeableTemporaryDrawer extends React.Component {
   constructor(props) {
     super(props)
@@ -46,6 +47,9 @@ class SwipeableTemporaryDrawer extends React.Component {
     });
   }
 
+  requests = () =>{
+    window.location.pathname = '/requests'
+  }
 
   render() {
 
@@ -59,6 +63,14 @@ class SwipeableTemporaryDrawer extends React.Component {
                 <MailIcon />
             </ListItemIcon>
             <ListItemText primary="Sign Out" onClick={this.signOut}/>
+            
+          </ListItem>
+          
+          <ListItem color="secondary">
+            <ListItemIcon>
+                <MailIcon />
+            </ListItemIcon>
+            <ListItemText primary="Requests" onClick={this.requests}/>            
           </ListItem>
 
         </List>
