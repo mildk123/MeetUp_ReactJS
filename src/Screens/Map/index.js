@@ -45,7 +45,7 @@ class SelecLocation extends Component {
                 localStorage.setItem('myUid', uid);
             }
         })
-        this.props.history.push('/home');
+        window.location.pathname = '/home'
     }
 
     updateCoords({ latitude, longitude }) {

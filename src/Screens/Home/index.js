@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 // Material Button
 import Button from '@material-ui/core/Button';
 // Drawer Material
-import Drawer from '../../Helper/Drawer';
+import Drawer from '../../Helper/Drawer'
 // Navbar
-import NavBar from '../../Helper/NavBar/';
+import NavBar from '../../Helper/NavBar/'
 // SnackBar
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-import Card from '../../Helper/Card/';
-
-import firebase from '../../Config/firebase';
+import Card from '../../Helper/Card/'
+import firebase from '../../Config/firebase'
 const database = firebase.database().ref();
 
 
@@ -17,7 +16,7 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showSnackBar: false,
+            showSnackBar: true,
             meetingList: []
         };
 
@@ -27,7 +26,7 @@ class Home extends Component {
     }
 
     setMeeting() {
-        this.props.history.push("/SelectMeeting");
+        window.location.pathname = "/SelectMeeting";
     }
 
     Drawer = () => {
@@ -41,7 +40,7 @@ class Home extends Component {
                 database.child('meetings').child(uid).on('child_added', (callback) => {
                     let myAllMeetings = callback.val()
                     this.setState({
-                        meetingList: [...this.state.meetingList, {
+                        meetingList: [...this.state.meetingList ,{
                             meetingDate: myAllMeetings.meetingDate,
                             meetingTime: myAllMeetings.meetingTime,
                             meetingVenue: myAllMeetings.VenueName,
@@ -50,32 +49,12 @@ class Home extends Component {
                             meetingWithPic: myAllMeetings.pictures,
                             status: myAllMeetings.status,
                         }],
-                        showSnackBar: false
+                        showSnackBar : false
                     })
-                })
-            } else {
-
-                this.setState({
-                    showSnackBar: true
                 })
             }
         })
-
-
     }
-
-    handleClick = (name) => {
-        console.log(name)
-        if (name === "Dashboard"){
-          this.setState({
-            value : 0
-          })
-        }else{
-          this.setState({
-            value : 1   
-          })
-        }
-      }
 
 
     render() {
@@ -102,20 +81,19 @@ class Home extends Component {
 
                 <div>
                     {this.state.meetingList.map((item, index) => {
-                        return <Card key={index}
-                            meetingWith={item.meetingWith}
-                            meetingVenueAdd={item.meetingVenueAdd}
-                            meetingVenue={item.meetingVenue}
-                            meetingDate={item.meetingDate}
-                            meetingTime={item.meetingTime}
-                            status={item.status}
-                            dp={item.meetingWithPic[0]}
+                    return <Card key={index}  
+                    meetingWith={item.meetingWith} 
+                    meetingVenueAdd={item.meetingVenueAdd} 
+                    meetingVenue={item.meetingVenue}
+                    meetingDate={item.meetingDate} 
+                    meetingTime={item.meetingTime} 
+                    status={item.status} 
+                    dp={item.meetingWithPic[0]}
 
-                            btnLeft="Start"
-                            btnRight="cancel" />
+                    btnLeft="Start" 
+                    btnRight="cancel" />
                     })}
                 </div>
-
 
             </div>
         );

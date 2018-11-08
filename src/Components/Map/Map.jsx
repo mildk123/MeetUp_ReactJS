@@ -26,7 +26,7 @@ class Map extends Component {
                     longitude: position.coords.longitude,
                 }
             })
-        })          
+        })
     }
 
     render() {
@@ -75,4 +75,3 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) =>
 ))
 
 export default Map;
-

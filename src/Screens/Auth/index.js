@@ -19,24 +19,25 @@ const database = firebase.database().ref();
 
 
 class AuthScreen extends Component {
-    constructor(props) {
-        super(props)
+    constructor() {
+        super()
 
         this.showLogin = this.showLogin.bind(this);
         this.LoginDialogs = React.createRef()
         this.signUpWithFb = this.signUpWithFb.bind(this);
+
     }
 
 
     componentWillMount() {
         if (localStorage.getItem('userSignup')) {
-            this.props.history.push("/home");
+            window.location.pathname = "/home"
         }
     }
 
-    signUpWithFb() { 
+    signUpWithFb() {
         firebase.auth().signInWithPopup(provider)
-            .then((result) => {
+            .then(function (result) {
                 const fullname = result.user.displayName
                 const email = result.user.email
                 const uid = result.user.uid
@@ -47,11 +48,9 @@ class AuthScreen extends Component {
                         email: email,
                         uid: uid,
                     })
-                    this.props.history.push('/Profile');
-
+                    window.location.pathname = '/Profile'
                 } else {
-                    
-                    this.props.history.push('/Home');
+                    window.location.pathname = '/Home'
                     localStorage.setItem('userSignup', true);
                 }
             })
@@ -59,7 +58,6 @@ class AuthScreen extends Component {
             .catch(function (error) {
                 console.log(error.message)
             });
-            console.log(this.props)
     }
 
     onChangeHandler(targetName, targetValue) {
