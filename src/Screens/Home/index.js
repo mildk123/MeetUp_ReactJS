@@ -8,8 +8,6 @@ import NavBar from '../../Helper/NavBar/';
 // SnackBar
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Card from '../../Helper/Card/';
-//Footer
-import Footer from '../../Helper/Footer';
 
 import firebase from '../../Config/firebase';
 const database = firebase.database().ref();
@@ -66,6 +64,19 @@ class Home extends Component {
 
     }
 
+    handleClick = (name) => {
+        console.log(name)
+        if (name === "Dashboard"){
+          this.setState({
+            value : 0
+          })
+        }else{
+          this.setState({
+            value : 1   
+          })
+        }
+      }
+
 
     render() {
         return (
@@ -106,7 +117,6 @@ class Home extends Component {
                 </div>
 
 
-                <Footer />
             </div>
         );
     }
