@@ -18,6 +18,7 @@ const styles = {
     position: 'fixed',
     bottom: 0,
     width: '100%',
+    marginTop: `5%`
   },
 };
 

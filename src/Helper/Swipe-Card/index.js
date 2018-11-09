@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
+
 const styles = {
   card: {
     marginLeft: 'auto',
@@ -26,6 +27,7 @@ const styles = {
 };
 
 function MediaCard(props) {
+    console.log(props)
     return (
         <div className='cardContainer'>
             <Cards
@@ -34,10 +36,14 @@ function MediaCard(props) {
                 // size={[100, 300]}
             >
                 {props.userListArray.map((item, noId) =>
+
                     <Card
                         key={noId}
                         onSwipeLeft={(UID, index) => props.swipeLeft(item.uid, noId)}
                         onSwipeRight={(UID, index) => props.swipeRight(item.uid, noId)}>
+
+
+
                         <Carousel
                             infiniteLoop
                             showStatus={false}
@@ -50,6 +56,10 @@ function MediaCard(props) {
                                 return <img key={index} src={img} alt={index} />
                             })}
                         </Carousel>
+
+
+
+
                         <div>
                             <h3 id='nameUser'>Full Name: {item.fullname}</h3>
                             <h3 id='nameUser'>Nick: {item.nickname}</h3>
@@ -64,8 +74,14 @@ function MediaCard(props) {
                                 Superlike ❤
                          </Button>
                         </div>
+
+
+
                     </Card>
                 )}
+
+
+
             </Cards>
         </div>
 

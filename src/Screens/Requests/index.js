@@ -39,8 +39,8 @@ class Requests extends Component {
         firebase.auth().onAuthStateChanged((myProfile) => {
             if (myProfile) {
                 firebase.database().ref().child('requests/').child(myProfile.uid).on('child_added', (callback) => {
-                    let key = callback.key
-                    let data = callback.val()
+                    // let key = callback.key
+                    // let data = callback.val()
 
                     
                     this.setState({

@@ -4,7 +4,7 @@ import Auth from './Auth/index';
 import Home from './Home/index';
 import Profile from './Profile/index';
 import Maps from './Map'
-import SelectMeet from './SelectMeet/';
+import SelectMeet from './SelectMeet/index';
 import Directions from './SelectMeet/Directions'
 // import MeetLocation from './SelectMeet/MeetLocation';
 import Requests from './Requests';
@@ -14,7 +14,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Route, Switch } from 'react-router'
 
 //Footer
-import Footer from '../Helper/Footer';
+// import Footer from '../Helper/Footer';
 
 
 
@@ -56,7 +56,7 @@ class Routes extends React.Component {
                         {/* <Route exact path="/SelectMeeting/meetlocation" component={MeetLocation} /> */}
                         <Route path="/getDirections" component={Directions} />
                     </Switch>
-                    <Footer value={this.state.value} handler={this.handleClick} />
+                    {/* <Footer value={this.state.value} handler={this.handleClick} /> */}
 
                 </div>
             </BrowserRouter>
