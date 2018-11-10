@@ -60,14 +60,6 @@ function MediaCard(props) {
           {props.btnLeft}
         </Button>}
 
-        {props.btnMid && <Button  size="small" color="primary">
-
-        {props.requestsForMe[props.index].map((item,index) => {
-          console.log(item)
-        })
-      }
-
-        </Button>}
 
         <Button size="small" color="primary">
           {props.btnRight}
