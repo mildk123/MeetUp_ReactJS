@@ -11,8 +11,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 
 
-// Add to calender
-import AddCalendar from 'react-add-to-calendar'
 
 const styles = {
   card: {
@@ -41,7 +39,7 @@ function MediaCard(props) {
         <CardContent>
           <div>
             <b>Meet :</b> {props.meetingWith}<br />
-            <b>Venue :</b>{props.meetingVenue}<br />
+            <b>Venue :</b>{props.meetingVenueName}<br />
             <b>Address :</b>{props.meetingVenueAdd}<br />
             <b>Date :</b>{props.meetingDate}<br />
             <b>Time :</b>{props.meetingTime} <br />
