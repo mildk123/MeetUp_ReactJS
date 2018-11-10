@@ -11,6 +11,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 
 
+// Add to calender
+import AddCalendar from 'react-add-to-calendar'
+
 const styles = {
   card: {
     marginLeft: 'auto',
@@ -27,6 +30,7 @@ const styles = {
 function MediaCard(props) {
   const { classes } = props;
   return (
+
     <Card className={classes.card}>
       <CardActionArea>
         <CardMedia
@@ -36,26 +40,44 @@ function MediaCard(props) {
         />
         <CardContent>
           <div>
-          <b>Meet :</b> {props.meetingWith}<br/>
-          <b>Venue :</b>{props.meetingVenue}<br/>
-          <b>Address :</b>{props.meetingVenueAdd}<br/>
-          <b>Date :</b>{props.meetingDate}<br/>
-          <b>Time :</b>{props.meetingTime} <br/>
-          <b>Status :</b>{props.status}<br/>
+            <b>Meet :</b> {props.meetingWith}<br />
+            <b>Venue :</b>{props.meetingVenue}<br />
+            <b>Address :</b>{props.meetingVenueAdd}<br />
+            <b>Date :</b>{props.meetingDate}<br />
+            <b>Time :</b>{props.meetingTime} <br />
+            <b>Status :</b>{props.status}<br />
           </div>
 
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
+
+        {props.btnMid === null && <Button size="small" color="primary">
           {props.btnLeft}
-        </Button>
+        </Button>}
+
+        {props.btnMid && <Button size="small" color="primary">
+          {props.btnLeft}
+        </Button>}
+
+        {props.btnMid && <Button  size="small" color="primary">
+
+        {props.requestsForMe[props.index].map((item,index) => {
+          console.log(item)
+        })
+      }
+
+        </Button>}
+
         <Button size="small" color="primary">
-        {props.btnRight}
+          {props.btnRight}
         </Button>
+
+
       </CardActions>
     </Card>
   );
+
 }
 
 MediaCard.propTypes = {
