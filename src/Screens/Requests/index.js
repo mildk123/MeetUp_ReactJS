@@ -70,22 +70,46 @@ class Requests extends Component {
 
                 <div>
                     {this.state.requestsForMe.map((item, index) => {
-                        return <Card key={index}  
-                    meetingWith={item.personName} 
-                    meetingVenueAdd={item.VenueAdd} 
-                    meetingVenue={item.VenueName}
-                    meetingDate={item.meetingDate} 
-                    meetingTime={item.meetingTime} 
-                    dp={item.pictures[0]}
+                        return <Card className={classes.card}>
+                            <CardActionArea>
+                                <CardMedia
+                                    className={classes.media}
+                                    image={props.dp}
+                                    title="Contemplative Reptile"
+                                />
+                                <CardContent>
+                                    <div>
+                                        <b>Meet :</b> {props.meetingWith}<br />
+                                        <b>Venue :</b>{props.meetingVenue}<br />
+                                        <b>Address :</b>{props.meetingVenueAdd}<br />
+                                        <b>Date :</b>{props.meetingDate}<br />
+                                        <b>Time :</b>{props.meetingTime} <br />
+                                        <b>Status :</b>{props.status}<br />
+                                    </div>
 
-                    requestsForMe={this.state.requestsForMe}
-                    index={index}
-                    btnLeft="Get Directions" 
-                    btnMid="Add To Calender"
-                    btnRight="Delete" />
+                                </CardContent>
+                            </CardActionArea>
+                            <CardActions>
+
+                                {props.btnMid === null && <Button size="small" color="primary">
+                                    {props.btnLeft}
+                                </Button>}
+
+                                {props.btnMid && <Button size="small" color="primary">
+                                    {props.btnLeft}
+                                </Button>}
+
+
+                                <Button size="small" color="primary">
+                                    {props.btnRight}
+                                </Button>
+
+
+                            </CardActions>
+                        </Card>
 
                     })}
-                       
+
                 </div>
             </Fragment>
 
