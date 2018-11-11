@@ -35,6 +35,7 @@ class Home extends Component {
         };
 
         this.showDrawer = React.createRef()
+        
         this.setMeeting = this.setMeeting.bind(this);
 
     }
