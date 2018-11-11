@@ -1,13 +1,27 @@
 import React, { Component } from 'react';
+
 // Material Button
 import Button from '@material-ui/core/Button';
+
 // Drawer Material
 import Drawer from '../../Helper/Drawer'
+
 // Navbar
 import NavBar from '../../Helper/NavBar/'
+
+// SweetAlert
+import swal from 'sweetalert'
+
 // SnackBar
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-import Card from '../../Helper/Card/'
+
+// Card
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+
 import firebase from '../../Config/firebase'
 const database = firebase.database().ref();
 
@@ -49,6 +63,7 @@ class Home extends Component {
                             meetingWith: myAllMeetings.personName,
                             meetingWithPic: myAllMeetings.pictures,
                             status: myAllMeetings.status,
+                            key: callback.key
                         }],
                         showSnackBar : false
                     })
@@ -57,6 +72,28 @@ class Home extends Component {
         })
     }
 
+    startMeet = (userUid, arrayKey) => {
+        swal('Start Meet under construction!')
+    }
+
+    removeRequest = (userUid, arrayKey) => {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                firebase.database().ref().child('meetings').child(user.uid).child(userUid).remove()
+
+                
+                let array = this.state.meetingList
+                array.splice(arrayKey, 1)
+                this.setState({
+                    meetingList: array
+                })
+
+            } else {
+                // No user is signed in.
+                this.props.history.push('./Authentication')
+            }
+        });
+    }
 
     render() {
         return (
@@ -82,17 +119,57 @@ class Home extends Component {
 
                 <div>
                     {this.state.meetingList.map((item, index) => {
-                    return <Card key={index}  
-                    meetingWith={item.meetingWith} 
-                    meetingVenueAdd={item.meetingVenueAdd} 
-                    meetingVenue={item.meetingVenue}
-                    meetingDate={item.meetingDate} 
-                    meetingTime={item.meetingTime} 
-                    status={item.status} 
-                    dp={item.meetingWithPic[0]}
+                    return <Card 
+                        key={index}
+                        style={{
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: '2%',
+                            maxWidth: '520px',
+                            width: '95vw'
+                        }}>
+                            <CardActionArea>
+                                <CardMedia
+                                    style={{
+                                        height: 240,
+                                    }}
+                                    image={item.meetingWithPic[0]}
+                                    title="Contemplative Reptile"
+                                />
+                                <CardContent>
+                                    <div>
+                                        <b>Meet :</b> {item.meetingWith}<br />
+                                        <b>Venue :</b>{item.meetingVenue}<br />
+                                        <b>Address :</b>{item.meetingVenueAdd}<br />
+                                        <b>Date :</b>{item.meetingDate}<br />
+                                        <b>Time :</b>{item.meetingTime} <br />
+                                        <b>status:</b> {item.status} 
+                                    </div>
 
-                    btnLeft="Start" 
-                    btnRight="cancel" />
+                                </CardContent>
+                            </CardActionArea>
+                            <CardActions>
+
+                                {item.status !== 'Cancelled' && <Button 
+                                size="small" 
+                                variant="contained" 
+                                color="secondary"
+                                onClick={() => this.startMeet(item.key, index)}
+                                >
+                                    Start
+                                </Button>}
+
+                                <Button 
+                                variant="contained" 
+                                onClick={() => this.removeRequest(item.key, index)} 
+                                size="small" 
+                                color="primary">
+                                    Delete
+                                </Button>
+
+
+                            </CardActions>
+                        </Card>
                     })}
                 </div>
 
