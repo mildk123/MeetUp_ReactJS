@@ -33,6 +33,7 @@ class Home extends Component {
         this.showDrawer.current.handleClickOpen('left', true);
     }
 
+
     componentDidMount() {
         firebase.auth().onAuthStateChanged((myProfile) => {
             if (myProfile) {

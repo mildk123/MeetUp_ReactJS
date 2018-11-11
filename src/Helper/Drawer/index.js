@@ -51,6 +51,10 @@ class SwipeableTemporaryDrawer extends React.Component {
     window.location.pathname = '/requests'
   }
 
+  dashboard = () => {
+    window.location.pathname = '/Home'
+  }
+
   render() {
 
     const sideList = (
@@ -66,12 +70,19 @@ class SwipeableTemporaryDrawer extends React.Component {
             
           </ListItem>
           
-          <ListItem color="secondary">
+          {window.location.pathname === '/Home' && <ListItem color="secondary">
             <ListItemIcon>
                 <MailIcon />
             </ListItemIcon>
             <ListItemText primary="Requests" onClick={this.requests}/>            
-          </ListItem>
+          </ListItem>}
+
+          {window.location.pathname === '/requests' && <ListItem color="secondary">
+            <ListItemIcon>
+                <MailIcon />
+            </ListItemIcon>
+            <ListItemText primary="Dashboard" onClick={this.dashboard}/>            
+          </ListItem>}
 
         </List>
 

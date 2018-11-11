@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 
 // Add to calender
 import AddCalendar from 'react-add-to-calendar'
+
 import firebase from '../../Config/firebase'
 
 class Requests extends Component {
@@ -33,12 +34,22 @@ class Requests extends Component {
         firebase.auth().onAuthStateChanged((myProfile) => {
             if (myProfile) {
                 firebase.database().ref().child('requests/').child(myProfile.uid).on('child_added', (callback) => {
-                    // let key = callback.key
-                    // let data = callback.val()
+                    let key = callback.key
+                    let data = callback.val()
+                    let request = {
+                        VenueAdd: data.VenueAdd,
+                        VenueName: data.VenueName,
+                        meetingDate: data.meetingDate,
+                        meetingTime: data.meetingTime,
+                        personName: data.personName,
+                        pictures: data.pictures,
+                        senderUid: data.senderUid,
+                        key : key
+                    }
 
 
                     this.setState({
-                        requestsForMe: [...this.state.requestsForMe, callback.val()]
+                        requestsForMe: [...this.state.requestsForMe, request]
                     })
                 })
 
@@ -48,10 +59,14 @@ class Requests extends Component {
         })
     }
 
-    removeRequest = (key, arrayKey) => {
+    removeRequest = (key, arrayKey, senderUid) => {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                database.child('requests').child(user.uid).child(key).remove()
+                firebase.database().ref().child('meetings').child(senderUid).child(user.uid).update({
+                    status: 'Cancelled'
+                })
+                firebase.database().ref().child('requests').child(user.uid).child(key).remove()
+                
                 let array = this.state.requestsForMe
                 array.splice(arrayKey, 1)
                 this.setState({
@@ -77,7 +92,9 @@ class Requests extends Component {
 
                 <div>
                     {this.state.requestsForMe.map((item, index) => {
-                        return <Card style={{
+                        return <Card 
+                        key={index}
+                        style={{
                             marginLeft: 'auto',
                             marginRight: 'auto',
                             marginTop: '2%',
@@ -95,7 +112,7 @@ class Requests extends Component {
                                 <CardContent>
                                     <div>
                                         <b>Meet :</b> {item.personName}<br />
-                                        <b>Venue :</b>{item.Venue}<br />
+                                        <b>Venue :</b>{item.VenueName}<br />
                                         <b>Address :</b>{item.VenueAdd}<br />
                                         <b>Date :</b>{item.meetingDate}<br />
                                         <b>Time :</b>{item.meetingTime} <br />
@@ -105,16 +122,19 @@ class Requests extends Component {
                             </CardActionArea>
                             <CardActions>
 
-                                <Button size="small" color="primary">
+                                <Button size="small" variant="outlined" color="primary">
                                     Get Directions
                                 </Button>}
 
-                                <Button size="small" color="primary">
+                                <Button size="small" variant="outlined" color="primary">
                                     <AddCalendar />
                                 </Button>
 
-
-                                <Button onClick={this.removeRequest} size="small" color="primary">
+                                <Button 
+                                variant="outlined" 
+                                onClick={() => this.removeRequest(item.key, index, item.senderUid)} 
+                                size="small" 
+                                color="primary">
                                     Delete
                                 </Button>
 

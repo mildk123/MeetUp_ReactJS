@@ -54,7 +54,7 @@ class MeetLocation extends Component {
                 if (myProfile) {
                     const uid = myProfile.uid;
 
-                    firebase.database().ref('meetings/' + uid).push({
+                    firebase.database().ref('meetings/').child(uid).child(this.props.personDetails.uid).set({
                         VenueName: this.state.VenueName,
                         VenueAdd: this.state.VenueAdd,
                         personName: this.props.personDetails.fullname,
@@ -63,8 +63,7 @@ class MeetLocation extends Component {
                         meetingTime: this.state.meetingTime,
                         status: 'Pending'
                     }, (success) => {
-                        debugger
-                        console.log(this.props.myDetails)
+                        console.log(this.props)
                         database.child('requests/').child(this.props.myDetails.uid).push({
                             VenueName: this.state.VenueName,
                             VenueAdd: this.state.VenueAdd,
@@ -72,6 +71,7 @@ class MeetLocation extends Component {
                             pictures: this.props.myDetails.profilePicturesLink,
                             meetingDate: this.state.meetingDate,
                             meetingTime: this.state.meetingTime,
+                            senderUid: uid
 
                         }, () => window.location.pathname = '/Home')
 

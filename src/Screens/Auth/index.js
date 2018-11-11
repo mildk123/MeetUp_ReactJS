@@ -31,7 +31,7 @@ class AuthScreen extends Component {
 
     componentWillMount() {
         if (localStorage.getItem('userSignup')) {
-            window.location.pathname = "/home"
+            this.props.history.push('/Home')
         }
     }
 
@@ -48,9 +48,9 @@ class AuthScreen extends Component {
                         email: email,
                         uid: uid,
                     })
-                    window.location.pathname = '/Profile'
+                    this.props.history.push('/Profile')
                 } else {
-                    window.location.pathname = '/Home'
+                    this.props.history.push('/Home')
                     localStorage.setItem('userSignup', true);
                 }
             })
@@ -92,6 +92,7 @@ class AuthScreen extends Component {
                             <Link to='/CreateAcc'>
                                 Create Account
                             </Link> */}
+
 
             </div>
         </Fragment>
