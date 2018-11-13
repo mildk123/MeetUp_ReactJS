@@ -30,8 +30,6 @@ class selectMeet extends Component {
         }
 
         this.showDrawer = React.createRef()
-        this.swipeLeft = this.swipeLeft.bind(this)
-        this.swipeRight = this.swipeRight.bind(this)
     }
 
     componentDidMount() {
@@ -64,7 +62,7 @@ class selectMeet extends Component {
         })
     }
 
-    swipeRight(UID, index) {
+    swipeRight = (UID, index) => {
         swal({
             title: "Are you sure?",
             text: `Do you want to meet ${this.state.userListArray[index].fullname} ?`,
@@ -89,14 +87,14 @@ class selectMeet extends Component {
 
     }
 
-    swipeLeft(UID, index) {
+    swipeLeft = (UID, index) => {
         this.setState({
             userDisliked: [...this.state.userDisliked, UID]
         })
     }
 
     onEnd() {
-        console.log('Get More Cards')
+        swal('Please come later..')
     }
 
     Drawer = () => {

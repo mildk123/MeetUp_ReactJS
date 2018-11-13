@@ -9,6 +9,5 @@ import store from './Redux/store'
 
 
 ReactDOM.render(<Provider store={store} ><App /></Provider>, document.getElementById('root'));
-// registerServiceWorker();
 serviceWorker.unregister();
 

@@ -1,20 +1,24 @@
 import React from 'react';
 
 import Auth from './Auth/index';
+
 import Home from './Home/index';
-import Profile from './Profile/index';
+
+import UserInfo from './Profile/UserInfo';
+import UserPic from './Profile/UserPic';
+import UserChoices from './Profile/UserChoices';
+
 import Maps from './Map'
+
 import SelectMeet from './SelectMeet/index';
 import Directions from './SelectMeet/Directions'
-// import MeetLocation from './SelectMeet/MeetLocation';
+
 import Requests from './Requests';
 
 
 import { BrowserRouter } from 'react-router-dom'
 import { Route, Switch } from 'react-router'
 
-//Footer
-// import Footer from '../Helper/Footer';
 
 
 
@@ -49,14 +53,14 @@ class Routes extends React.Component {
                     <Switch>
                         <Route exact path="/" component={Auth} />
                         <Route path="/Home" component={Home} />
-                        <Route path="/Profile" component={Profile} />
+                        <Route path="/Profile/info" component={UserInfo} />
+                        <Route path="/Profile/Pic" component={UserPic} />
+                        <Route path="/Profile/choices" component={UserChoices} />
                         <Route path="/selectLocation" component={Maps} />
                         <Route path="/requests" component={Requests} />
-                        <Route exact path="/SelectMeeting" component={SelectMeet} />
-                        {/* <Route exact path="/SelectMeeting/meetlocation" component={MeetLocation} /> */}
+                        <Route exact path="/meet" component={SelectMeet} />
                         <Route path="/getDirections" component={Directions} />
                     </Switch>
-                    {/* <Footer value={this.state.value} handler={this.handleClick} /> */}
 
                 </div>
             </BrowserRouter>

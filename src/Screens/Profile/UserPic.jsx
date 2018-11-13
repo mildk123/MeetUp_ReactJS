@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from 'react';
+
+import swal from 'sweetalert'
+
 import ImageUploader from 'react-images-upload';
+import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button';
 
 import firebase from '../../Config/firebase'
 const database = firebase.database().ref();
-
-
 
 
 class UserPic extends Component {
@@ -15,19 +17,15 @@ class UserPic extends Component {
             profilePictures: [],
             profilePicturesLink: []
         };
-
-        this.onDrop = this.onDrop.bind(this);
-        this.imageUploadHandler = this.imageUploadHandler.bind(this);
-
     }
 
-    onDrop(pictureFiles, pictureDataURLs) {
+    onDrop = (pictureFiles) => {
         this.setState({
             profilePictures: [...this.state.profilePictures, ...pictureFiles]
         })
     }
 
-    imageUploadHandler() {
+    imageUploadHandler = () => {
         let storageRef = firebase.storage().ref();
 
         firebase.auth().onAuthStateChanged((myProfile) => {
@@ -44,12 +42,13 @@ class UserPic extends Component {
                             })
                             database.child('users/' + myUid).update({
                                 profilePicturesLink: this.state.profilePicturesLink
+                            },() => {
+                                this.state.profilePicturesLink.length === this.state.profilePictures.length && this.props.history.push('Choices')
                             })
-                                this.state.profilePicturesLink.length === this.state.profilePictures.length && this.props.nextStep()
-                                return downloadURL;
+                            return downloadURL;
                         })
                         .catch((error) => {
-                            console.log(error.message)
+                            swal(error.message)
                         })
                 })
             }
@@ -60,22 +59,30 @@ class UserPic extends Component {
     render() {
         return (
             <Fragment>
-                <div>
-                    <h1>Upload Photos to Your Profile</h1>
-                </div>
-                <ImageUploader
-                    buttonText='Upload'
-                    imgExtension={['.jpg', '.png']}
-                    maxFileSize={10000000}
-                    onChange={this.onDrop}
-                    withPreview
-                    label="'Select At least 3 images*"
-                />
-                <div>
-                    <Button onClick={this.imageUploadHandler} variant="contained" color="primary" >
-                        Next
+                <Paper>
+                    <ImageUploader
+                        buttonText='Upload'
+                        imgExtension={['.jpg', '.png']}
+                        maxFileSize={10000000}
+                        onChange={this.onDrop}
+                        withPreview
+                        label="'Select At least 3 images*"
+                    />
+                    <div style={{
+                        width: `100vw`,
+                        background: '#e0e0e0',
+                        position: 'fixed',
+                        bottom: 0,
+                        padding: 5,
+                        }}>
+                        <Button
+                            onClick={this.imageUploadHandler}
+                            variant="contained"
+                            color="secondary" >
+                            Next
                      </Button>
-                </div>
+                    </div>
+                </Paper>
             </Fragment>
         );
     }

@@ -6,16 +6,13 @@ import LoginDialog from '../../Helper/LoginDialog/'
 // Material Button
 import Button from '@material-ui/core/Button';
 
-// Firebase Config
-import firebase from '../../Config/firebase'
+// Facebook Login
+import {signUpWithFb} from '../../Helper/FbLogin/index'
 
 // Local CSS
 import './style.css'
 
-// FACEBOOK PROVIDER
-const provider = new firebase.auth.FacebookAuthProvider();
 
-const database = firebase.database().ref();
 
 
 class AuthScreen extends Component {
@@ -24,48 +21,22 @@ class AuthScreen extends Component {
 
         this.showLogin = this.showLogin.bind(this);
         this.LoginDialogs = React.createRef()
-        this.signUpWithFb = this.signUpWithFb.bind(this);
     }
 
 
     componentWillMount() {
         if (localStorage.getItem('userSignup')) {
-            this.props.history.push('/Home')
+            this.props.history.push('Home')
         }
     }
 
-    signUpWithFb() {
-        firebase.auth().signInWithPopup(provider)
-            .then(function (result) {
-                const fullname = result.user.displayName
-                const email = result.user.email
-                const uid = result.user.uid
-
-                if (result.additionalUserInfo.isNewUser) {
-                    database.child('users/' + uid).set({
-                        fullname: fullname,
-                        email: email,
-                        uid: uid,
-                    })
-                    this.props.history.push('/Profile')
-                } else {
-                    this.props.history.push('/Home')
-                    localStorage.setItem('userSignup', true);
-                }
-            })
-
-            .catch(function (error) {
-                console.log(error.message)
-            });
-    }
-
-    onChangeHandler(targetName, targetValue) {
+    onChangeHandler = (targetName, targetValue) => {
         this.setState({
             [targetName]: targetValue,
         })
     }
 
-    showLogin() {
+    showLogin = () => {
         this.LoginDialogs.current.handleClickOpen();
     }
 
@@ -76,13 +47,12 @@ class AuthScreen extends Component {
 
                 <LoginDialog ref={this.LoginDialogs} />
 
-                {/* </Button> */}
                 <div className='btnDiv'>
                     <Button className="btn" onClick={this.showLogin} variant="contained" color="secondary" >
                         Login
                     </Button>
 
-                    <Button className="btn" onClick={this.signUpWithFb.bind(this)} variant="contained" color="primary" >
+                    <Button className="btn" onClick={() => signUpWithFb(this.props)} variant="contained" color="primary" >
                         Facebook
                     </Button>
                 </div>
