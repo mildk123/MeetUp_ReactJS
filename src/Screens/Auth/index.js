@@ -25,7 +25,6 @@ class AuthScreen extends Component {
         this.showLogin = this.showLogin.bind(this);
         this.LoginDialogs = React.createRef()
         this.signUpWithFb = this.signUpWithFb.bind(this);
-
     }
 
 
@@ -87,12 +86,6 @@ class AuthScreen extends Component {
                         Facebook
                     </Button>
                 </div>
-
-                {/* <Button variant="contained" color="primary" >
-                            <Link to='/CreateAcc'>
-                                Create Account
-                            </Link> */}
-
 
             </div>
         </Fragment>

@@ -14,6 +14,8 @@ import swal from 'sweetalert'
 
 // import { askForPermissioToReceiveNotifications } from  '../../push-notifications';
 
+import { updateUser } from '../../Redux/Actions/authAction'
+import { connect } from 'react-redux'
 
 // SnackBar
 import SnackbarContent from '@material-ui/core/SnackbarContent';
@@ -55,6 +57,7 @@ class Home extends Component {
     componentDidMount() {
         firebase.auth().onAuthStateChanged((myProfile) => {
             if (myProfile) {
+                this.props.onUpdateUser(myProfile);
                 const uid = myProfile.uid
                 database.child('meetings').child(uid).on('child_added', (callback) => {
                     let myAllMeetings = callback.val()
@@ -214,4 +217,17 @@ class Home extends Component {
     }
 }
 
-export default Home;
+
+const mapStateToProps = (state, props) => {
+    console.log('state', state)
+    console.log('props', props)
+    return {
+        state
+    }
+}
+
+const mapDispatchToProps = {
+    onUpdateUser: updateUser,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

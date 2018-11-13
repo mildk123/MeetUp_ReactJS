@@ -29,7 +29,6 @@ exports.sendNotification = functions.database.ref("Chats/{push}").onCreate(funct
     };
 
     return admin.database().ref(`/Tokens/${NOTIFICATION_SNAPSHOT.To}`).once("value").then(data => {
-        debugger;
 
         if (!data.val()) return;
 
