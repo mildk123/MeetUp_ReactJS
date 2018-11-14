@@ -51,7 +51,7 @@ class UserPic extends Component {
                         database.child('users/' + uid).child('/selections').update({
                             [key]: this.state.selections[key],
                         })
-                        this.props.history.push('/Home')
+                        this.props.history.push('/setMyLocation')
                     }
                 })
 

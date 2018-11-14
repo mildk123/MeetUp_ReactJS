@@ -2,6 +2,8 @@
 /* global google */
 
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button'
+import swal from 'sweetalert'
 const { withScriptjs, withGoogleMap, GoogleMap, DirectionsRenderer, Marker } = require("react-google-maps");
 
 class Direction extends Component {
@@ -29,7 +31,7 @@ class Direction extends Component {
           });
         } else {
           console.log(result)
-          alert("Sorry! Can't calculate directions!")
+          swal("Sorry! Can't calculate directions!")
         }
       });
   }
@@ -41,14 +43,34 @@ class Direction extends Component {
         isMarkerShown={true}
         googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdEpcl4TZffTuX0F7keZmYtaBFia1w_pQ"
         loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `400px` }} />}
+        containerElement={<div style={{ height: `87vh` }} />}
         mapElement={<div style={{ height: `100%` }} />}
         mylocation={this.props.mylocation}
         placeLocation={this.props.placeLocation}
         directions={this.state.directions}
 
       />
-      <button onClick={(myLocation, placeLocation) => this.getDirections(this.props.mylocation , this.props.placeLocation)} >get Directions</button>
+
+      <div
+      style={{
+        width: `100vw`,
+        background: '#e0e0e0',
+        position: 'fixed',
+        bottom: 0,
+        padding: 5,
+        }}
+      >
+      <Button 
+      color="secondary"
+      onClick={(myLocation, placeLocation) => this.getDirections(this.props.mylocation , this.props.placeLocation)} 
+      >Get Directions
+      </Button>
+      <Button
+      // onClick={this.props.history.goBack}
+      >
+        Next
+      </Button>
+      </div>
     </div>
   }
 }

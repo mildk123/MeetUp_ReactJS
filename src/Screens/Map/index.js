@@ -27,8 +27,6 @@ class SelecLocation extends Component {
         };
 
         this.showDrawer = React.createRef()
-        this.completedProfile = this.completedProfile.bind(this);
-        this.updateCoords = this.updateCoords.bind(this);
     }
     componentDidMount() {
         navigator.geolocation.getCurrentPosition(position => {
@@ -36,7 +34,7 @@ class SelecLocation extends Component {
         });
     }
 
-    completedProfile() {
+    completedProfile = () => {
         firebase.auth().onAuthStateChanged((myProfile) => {
             if (myProfile) {
                 const uid = myProfile.uid
@@ -50,10 +48,10 @@ class SelecLocation extends Component {
                 localStorage.setItem('myUid', uid);
             }
         })
-        window.location.pathname = '/home'
+        this.props.history.push('/Home');
     }
 
-    updateCoords({ latitude, longitude }) {
+    updateCoords = ({ latitude, longitude }) => {
         this.setState({ coords: { latitude, longitude } })
     }
 
@@ -72,9 +70,18 @@ class SelecLocation extends Component {
             <div>
                 <Map updateCoords={this.updateCoords} coords={this.state.coords} />
                 
-                <div>
+                <div               
+                    style={{
+                        width: `100vw`,
+                        background: '#e0e0e0',
+                        position: 'fixed',
+                        bottom: 0,
+                        padding: 5,
+                        }}>
                     <Button 
-                    style={{position: 'absolute', bottom: -10, left: 5}} 
+                    // style={{position: 'absolute', bottom: -10, left: 5}} 
+
+
                     size="large" 
                     variant="extendedFab" 
                     color="secondary" 

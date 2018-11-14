@@ -27,7 +27,6 @@ const styles = {
 };
 
 function MediaCard(props) {
-    console.log(props)
     return (
         <div className='cardContainer'>
             <Cards

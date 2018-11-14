@@ -40,12 +40,9 @@ class Home extends Component {
         };
 
         this.showDrawer = React.createRef()
-        
-        this.setMeeting = this.setMeeting.bind(this);
-
     }
 
-    setMeeting() {
+    setMeeting = () => {
         this.props.history.push("/meet")
     }
 

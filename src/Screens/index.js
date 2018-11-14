@@ -52,11 +52,11 @@ class Routes extends React.Component {
                 <div>
                     <Switch>
                         <Route exact path="/" component={Auth} />
-                        <Route path="/Home" component={Home} />
                         <Route path="/Profile/info" component={UserInfo} />
                         <Route path="/Profile/Pic" component={UserPic} />
                         <Route path="/Profile/choices" component={UserChoices} />
-                        <Route path="/selectLocation" component={Maps} />
+                        <Route path="/setMyLocation" component={Maps} />
+                        <Route path="/Home" component={Home} />
                         <Route path="/requests" component={Requests} />
                         <Route exact path="/meet" component={SelectMeet} />
                         <Route path="/getDirections" component={Directions} />

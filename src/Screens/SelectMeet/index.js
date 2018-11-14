@@ -94,7 +94,7 @@ class selectMeet extends Component {
     }
 
     onEnd() {
-        swal('Please come later..')
+        console.log('Please come later..')
     }
 
     Drawer = () => {
