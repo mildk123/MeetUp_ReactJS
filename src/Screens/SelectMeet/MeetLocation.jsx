@@ -63,7 +63,7 @@ class MeetLocation extends Component {
                         meetingTime: this.state.meetingTime,
                         status: 'Pending'
                     }, (success) => {
-                        database.child('requests/').child(myDetails.uid).push({
+                        database.child('requests/').child(meetingPerson.uid).push({
                             VenueName: this.state.VenueName,
                             VenueAdd: this.state.VenueAdd,
                             personName: myDetails.fullname,
@@ -106,6 +106,7 @@ class MeetLocation extends Component {
         })
     }
 
+    // FOURSQAURE API
     getVenues = () => {
         let latLong = this.state.latLong
 

@@ -103,7 +103,7 @@ class Home extends Component {
         const { showSnackBar, meetingList} = this.state;
         return (
             <div>
-                <Drawer ref={this.showDrawer} />
+                <Drawer ref={this.showDrawer} props={this.props}/>
 
                 <NavBar Drawer={this.Drawer} btnColor="secondary">
                     Dashboard
