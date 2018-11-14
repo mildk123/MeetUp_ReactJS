@@ -64,7 +64,7 @@ class SelecLocation extends Component {
     render() {
         return (
             <Fragment>
-                <Drawer ref={this.showDrawer}  />
+                <Drawer ref={this.showDrawer} props={this.props} />
 
                 <NavBar Drawer={this.Drawer}  btnColor="secondary">Location</NavBar>
             <div>

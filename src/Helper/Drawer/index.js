@@ -35,24 +35,26 @@ class SwipeableTemporaryDrawer extends React.Component {
   )
 
   signOut = () => {
-    firebase.auth().signOut().then(function() {
+    firebase.auth().signOut()
+    .then(() => {
       console.log('Signed Out');
       
       localStorage.removeItem('userSignup');
       localStorage.removeItem('myUid');
       
-      window.location.pathname = './'
-    }, function(error) {
+      this.props.props.history.push('/')
+    })
+    .catch(error => {
       console.error('Sign Out Error', error);
     });
   }
 
   requests = () =>{
-    window.location.pathname = '/requests'
+    this.props.props.history.push('/requests')
   }
 
   dashboard = () => {
-    window.location.pathname = '/Home'
+    this.props.props.history.push('/Home')
   }
 
   Edit = () => {

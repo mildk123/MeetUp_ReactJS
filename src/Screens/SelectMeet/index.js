@@ -112,7 +112,7 @@ class selectMeet extends Component {
         return (
 
             <Fragment>
-                <Drawer ref={this.showDrawer} />
+                <Drawer ref={this.showDrawer} props={this.props} />
 
                 <NavBar Drawer={this.Drawer} btnColor={'secondary'}>Meet</NavBar>
 

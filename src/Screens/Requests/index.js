@@ -54,7 +54,7 @@ class Requests extends Component {
                 })
 
             } else {
-                window.location.pathname = '/'
+                this.props.history.push('/')
             }
         })
     }
@@ -84,7 +84,7 @@ class Requests extends Component {
     render() {
         return (
             <Fragment>
-                <Drawer ref={this.showDrawer} />
+                <Drawer ref={this.showDrawer} props={this.props} />
 
                 <NavBar Drawer={this.Drawer} btnColor="secondary">
                     Requests
