@@ -11,6 +11,7 @@ import UserChoices from './Profile/UserChoices';
 import Maps from './Map'
 
 import SelectMeet from './SelectMeet/index';
+import meetLocation from './SelectMeet/MeetLocation.jsx'
 import Directions from './SelectMeet/Directions'
 
 import Requests from './Requests';
@@ -58,7 +59,9 @@ class Routes extends React.Component {
                         <Route path="/setMyLocation" component={Maps} />
                         <Route path="/Home" component={Home} />
                         <Route path="/requests" component={Requests} />
-                        <Route exact path="/meet" component={SelectMeet} />
+                        <Route exact path="/Meet" component={SelectMeet} />
+                        <Route exact path="/Meet/meetLocation" component={meetLocation} />
+
                         <Route path="/getDirections" component={Directions} />
                     </Switch>
 

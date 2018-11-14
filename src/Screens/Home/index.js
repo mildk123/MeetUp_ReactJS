@@ -43,7 +43,7 @@ class Home extends Component {
     }
 
     setMeeting = () => {
-        this.props.history.push("/meet")
+        this.props.history.push("/Meet")
     }
 
     Drawer = () => {
@@ -100,6 +100,7 @@ class Home extends Component {
     }
 
     render() {
+        const { showSnackBar, meetingList} = this.state;
         return (
             <div>
                 <Drawer ref={this.showDrawer} />
@@ -114,7 +115,7 @@ class Home extends Component {
 
 
                 <div>
-                    {this.state.showSnackBar && <SnackbarContent
+                    {showSnackBar && <SnackbarContent
                         message={
                             'You haven’t done any meeting yet!”, try creating a new meeting!'
                         }
@@ -122,7 +123,7 @@ class Home extends Component {
                 </div>
 
                 <div>
-                    {this.state.meetingList.map((item, index) => {
+                    {meetingList.map((item, index) => {
                     return <Card 
                         key={index}
                         style={{

@@ -3,12 +3,13 @@ import React, { Component, Fragment } from 'react'
 // Drawer Material
 import Drawer from '../../Helper/Drawer'
 import SwipeCard from '../../Helper/Swipe-Card'
-import MeetLocation from './MeetLocation'
 
 // Navbar
 import NavBar from '../../Helper/NavBar/'
 
-import firebase from '../../Config/firebase'
+// Redux
+import { updateMyData, updateOtherData } from '../../Redux/Actions/meetingAction'
+import { connect } from 'react-redux'
 
 // SweetAlert
 import swal from 'sweetalert';
@@ -16,6 +17,7 @@ import swal from 'sweetalert';
 // CSS
 import './style.css'
 
+import firebase from '../../Config/firebase'
 const database = firebase.database().ref();
 
 class selectMeet extends Component {
@@ -26,19 +28,25 @@ class selectMeet extends Component {
             myInfo: {},
             userDisliked: [],
             userLiked: [],
-            showPeople: true
         }
-
         this.showDrawer = React.createRef()
     }
 
     componentDidMount() {
         this.getMyDataDb()
-        this.getUser()
+        this.getUsers()
+    }
+
+    getUsers = () => {
+        database.child('/users').on('child_added', (response) => {
+            this.setState(prevState => ({
+                userListArray: [...this.state.userListArray, response.val()],
+            }))
+        })
     }
 
     getMyDataDb = () => {
-        // getting my Own Data from server
+        // getting my Data from server
         firebase.auth().onAuthStateChanged((myProfile) => {
             if (myProfile) {
                 const uid = myProfile.uid
@@ -47,20 +55,15 @@ class selectMeet extends Component {
                         myInfo: {
                             ...prevState.myInfo, [myData.key]: myData.val()
                         }
-                    }))
-                    // { this.state.myInfo.selections && this.filterUser() }
+                    }),() => {
+                        this.props.onUpdateMyData(this.state.myInfo)
+                    }
+                    )
                 })
             }
         })
     }
 
-    getUser = () => {
-        database.child('/users').on('child_added', (response) => {
-            this.setState(prevState => ({
-                userListArray: [...this.state.userListArray, response.val()],
-            }))
-        })
-    }
 
     swipeRight = (UID, index) => {
         swal({
@@ -71,15 +74,19 @@ class selectMeet extends Component {
             dangerMode: false,
         })
             .then((yes) => {
+                const { userListArray } = this.state
                 if (yes) {
+                    let meetingPerson = {
+                        fullname: userListArray[index].fullname,
+                        pictures: userListArray[index].profilePicturesLink,
+                        uid : userListArray[index].uid
+                    }
                     this.setState({
-                        showPeople: false,
-                        meetingPerson: {
-                            fullname: this.state.userListArray[index].fullname,
-                            pictures: this.state.userListArray[index].profilePicturesLink,
-                            uid : this.state.userListArray[index].uid
-                        }
-                    })
+                        meetingPerson,
+                    },() => {
+                        this.props.onUpdateOtherData(meetingPerson)
+                        this.props.history.push('/Meet/MeetLocation')
+                    } )
                 } else {
                     return
                 }
@@ -109,18 +116,25 @@ class selectMeet extends Component {
 
                 <NavBar Drawer={this.Drawer} btnColor={'secondary'}>Meet</NavBar>
 
-                {this.state.showPeople && <SwipeCard
+                <SwipeCard
                     userListArray={this.state.userListArray}
                     swipeLeft={this.swipeLeft}
                     swipeRight={this.swipeRight}
                     onEnd={this.onEnd}
                 />
-                }
-
-                {this.state.showPeople === false && <MeetLocation myDetails={this.state.myInfo} personDetails={this.state.meetingPerson} />}
+                
             </Fragment >
         )
     }
 }
 
-export default selectMeet;
+const mapStateToProps = (state) =>{
+    return state
+}
+
+const mapDispatchToProps = {
+    onUpdateMyData : updateMyData,
+    onUpdateOtherData : updateOtherData
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(selectMeet);

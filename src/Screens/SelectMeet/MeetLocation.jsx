@@ -2,15 +2,12 @@ import React, { Component, Fragment } from 'react';
 
 // Map 
 import Directions from './Directions'
-import firebase from '../../Config/firebase'
-
-
 
 // Button
 import Button from '@material-ui/core/Button';
 
 // Time Dialog
-import TimeDialog from '../../Helper/TimeDialog/'
+import TimeDialog from '../../Helper/TimeDialog'
 import Input from '@material-ui/core/Input';
 
 // Expansion Panel
@@ -23,14 +20,17 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 // Fetching Data from Server
 import Axios from 'axios'
 
+import { connect } from 'react-redux'
 
+
+import firebase from '../../Config/firebase'
 const database = firebase.database().ref()
 
 
 
 class MeetLocation extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             latLong: null,
             searchQuery: '',
@@ -42,40 +42,39 @@ class MeetLocation extends Component {
         }
 
         this.TimeDialog = React.createRef();
-        this.selectPlace = this.selectPlace.bind(this);
     }
 
 
 
 
     setMeet = () => {
+        const {meetingPerson, myDetails} = this.props.meetingReducer
         if (this.state.VenueName) {
             firebase.auth().onAuthStateChanged((myProfile) => {
                 if (myProfile) {
                     const uid = myProfile.uid;
 
-                    firebase.database().ref('meetings/').child(uid).child(this.props.personDetails.uid).set({
+                    firebase.database().ref('meetings/').child(uid).child(meetingPerson.uid).set({
                         VenueName: this.state.VenueName,
                         VenueAdd: this.state.VenueAdd,
-                        personName: this.props.personDetails.fullname,
-                        pictures: this.props.personDetails.pictures,
+                        personName: meetingPerson.fullname,
+                        pictures: meetingPerson.pictures,
                         meetingDate: this.state.meetingDate,
                         meetingTime: this.state.meetingTime,
                         status: 'Pending'
                     }, (success) => {
-                        console.log(this.props)
-                        database.child('requests/').child(this.props.myDetails.uid).push({
+                        database.child('requests/').child(myDetails.uid).push({
                             VenueName: this.state.VenueName,
                             VenueAdd: this.state.VenueAdd,
-                            personName: this.props.myDetails.fullname,
-                            pictures: this.props.myDetails.profilePicturesLink,
+                            personName: myDetails.fullname,
+                            pictures: myDetails.profilePicturesLink,
                             meetingDate: this.state.meetingDate,
                             meetingTime: this.state.meetingTime,
                             senderUid: uid
 
-                        }, () => window.location.pathname = '/Home')
+                        }, () => this.props.history.push('/Home')
 
-
+                        )
                     }
                     )
                 }
@@ -154,7 +153,7 @@ class MeetLocation extends Component {
             )
     }
 
-    selectPlace(index) {
+    selectPlace = (index) => {
         if (this.state.meetPlace[index].venue) {
             this.TimeDialog.current.handleClickOpen()
             let VenueAdd = this.state.meetPlace[index].venue.location.formattedAddress[0] + "," + this.state.meetPlace[index].venue.location.formattedAddress[1]
@@ -235,4 +234,9 @@ class MeetLocation extends Component {
     }
 }
 
-export default MeetLocation
+const mapStateToProps = (state,props) =>{
+    console.log(state)
+    return state
+}
+
+export default connect(mapStateToProps)(MeetLocation);
