@@ -8,6 +8,8 @@ import UserInfo from './Profile/UserInfo';
 import UserPic from './Profile/UserPic';
 import UserChoices from './Profile/UserChoices';
 
+import Ratings from './Ratings'
+
 import Maps from './Map'
 
 import SelectMeet from './SelectMeet/index';
@@ -59,6 +61,7 @@ class Routes extends React.Component {
                         <Route path="/Profile/choices" component={UserChoices} />
                         <Route path="/setMyLocation" component={Maps} />
                         <Route path="/Home" component={Home} />
+                        <Route path="/Ratings" component={Ratings} />
                         <Route path="/requests" component={Requests} />
                         <Route exact path="/Meet" component={SelectMeet} />
                         <Route exact path="/Meet/meetLocation" component={meetLocation} />

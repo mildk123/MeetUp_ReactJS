@@ -11,3 +11,8 @@ https://medium.freecodecamp.org/how-to-add-push-notifications-to-a-web-app-with-
 // // Dashboard
 ~ Only Get User with atleast one match,
 ~ show more than one picture of requester,
+
+// // Requests
+~ Add a button where all your request are added to your dashboard,
+
+// // Add drawer to main component instead of seprate,

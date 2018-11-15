@@ -12,9 +12,8 @@ import NavBar from '../../Helper/NavBar/'
 // SweetAlert
 import swal from 'sweetalert'
 
-// import { askForPermissioToReceiveNotifications } from  '../../push-notifications';
-
-import { updateUser } from '../../Redux/Actions/authAction'
+import { updateUser, } from '../../Redux/Actions/authAction'
+import { CurrentUserIndex } from '../../Redux/Actions/meetingAction'
 import { connect } from 'react-redux'
 
 // SnackBar
@@ -42,6 +41,10 @@ class Home extends Component {
         this.showDrawer = React.createRef()
     }
 
+    componentDidMount() {
+        this.getMyMeeting()    
+    }
+
     setMeeting = () => {
         this.props.history.push("/Meet")
     }
@@ -50,8 +53,7 @@ class Home extends Component {
         this.showDrawer.current.handleClickOpen('left', true);
     }
 
-
-    componentDidMount() {
+    getMyMeeting = () => {
         firebase.auth().onAuthStateChanged((myProfile) => {
             if (myProfile) {
                 this.props.onUpdateUser(myProfile);
@@ -59,6 +61,7 @@ class Home extends Component {
                 database.child('meetings').child(uid).on('child_added', (callback) => {
                     let myAllMeetings = callback.val()
                     this.setState({
+                        showSnackBar : false,
                         meetingList: [...this.state.meetingList ,{
                             meetingDate: myAllMeetings.meetingDate,
                             meetingTime: myAllMeetings.meetingTime,
@@ -68,12 +71,56 @@ class Home extends Component {
                             meetingWithPic: myAllMeetings.pictures,
                             status: myAllMeetings.status,
                             key: callback.key
-                        }],
-                        showSnackBar : false
-                    })
+                        }]
+                    },() => this.checkDate())
                 })
             }
         })
+    }
+
+    checkDate = () => {
+        let dateObj = new Date()
+        for (let key in this.state.meetingList){
+            let meetingDate = this.state.meetingList[key].meetingDate
+            let meetingTime = this.state.meetingList[key].meetingTime
+            
+            let meetYear = meetingDate.slice(0,4)
+            let meetMonth = meetingDate.slice(5,7)
+            let meetDate = meetingDate.slice(8,10)
+            
+            let meetHour = meetingTime.slice(0,2)
+            let meetMinutes = meetingTime.slice(3,5)
+
+            let meetme = new Date(meetYear, meetMonth-1, meetDate, meetHour, meetMinutes)
+            if (dateObj > meetme){
+                this.fireQuestion(key)
+            }    
+        }
+    }
+
+
+    fireQuestion = (key) => {
+        swal({
+            text: `Did you meet ${this.state.meetingList[key].meetingWith} ?`,
+            icon: "info",
+            buttons: ["No", "Yes"],
+            dangerMode: true,
+        })
+            .then((yes) => {
+                console.log(this.state.meetingList)
+                let meetingPersonUid = (this.state.meetingList[key].key)
+                if (yes) {
+                    this.props.onCurrentUserIndex(meetingPersonUid)
+                    database.child('meetings').child(firebase.auth().currentUser.uid).child(meetingPersonUid).update({
+                        status : 'Done'
+                    },() => this.props.history.push('/Ratings'))
+                } else {
+                    this.props.CurrentUserIndex(meetingPersonUid)
+                    database.child('meetings').child(firebase.auth().currentUser.uid).child(meetingPersonUid).update({
+                        status : 'Cancelled'
+                    },() => this.props.history.push('/Ratings'))
+                }
+            });
     }
 
     startMeet = (userUid, arrayKey) => {
@@ -84,7 +131,6 @@ class Home extends Component {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 firebase.database().ref().child('meetings').child(user.uid).child(userUid).remove()
-
                 
                 let array = this.state.meetingList
                 array.splice(arrayKey, 1)
@@ -111,8 +157,6 @@ class Home extends Component {
                         Set a meeting!
                     </Button>                    
                 </NavBar>
-
-
 
                 <div>
                     {showSnackBar && <SnackbarContent
@@ -192,6 +236,7 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = {
     onUpdateUser: updateUser,
+    onCurrentUserIndex : CurrentUserIndex
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

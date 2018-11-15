@@ -6,6 +6,9 @@ const reducer = (state= {}, action) =>{
         case 'UPDATE_OTHER_DATA' : {
             return {...state, meetingPerson : action.payload}
         }
+        case `CurrentUserIndex` : {
+            return {...state, meetingPerson : action.payload}
+        }
         default : {
             return state
         }

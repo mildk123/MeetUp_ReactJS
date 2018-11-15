@@ -12,7 +12,14 @@ const updateOtherData = otherDetails => {
     }
 }
 
+const CurrentUserIndex = uid => {
+    return {
+        type : 'CurrentUserIndex',
+        payload: uid
+    }
+}
 export {
     updateMyData,
-    updateOtherData
+    updateOtherData,
+    CurrentUserIndex
 }
