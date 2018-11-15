@@ -39,9 +39,11 @@ class selectMeet extends Component {
 
     getUsers = () => {
         database.child('/users').on('child_added', (response) => {
-            this.setState(prevState => ({
-                userListArray: [...this.state.userListArray, response.val()],
-            }))
+            if(response.key !== firebase.auth().currentUser.uid){
+                this.setState({
+                    userListArray: [...this.state.userListArray, response.val()],
+                    })
+                }
         })
     }
 
