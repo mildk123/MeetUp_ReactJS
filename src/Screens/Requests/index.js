@@ -98,7 +98,7 @@ class Requests extends Component {
                 })
             } else {
                 // No user is signed in.
-                this.props.history.push('./Authentication')
+                this.props.history.push('/')
             }
         });
     }

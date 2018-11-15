@@ -75,7 +75,7 @@ class Home extends Component {
                     }, () => this.checkDate())
                 })
             } else {
-                this.props.history.push('/Authentication')
+                this.props.history.push('/')
             }
         })
     }
@@ -141,7 +141,7 @@ class Home extends Component {
 
             } else {
                 // No user is signed in.
-                this.props.history.push('./Authentication')
+                this.props.history.push('/')
             }
         });
     }
