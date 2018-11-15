@@ -53,6 +53,7 @@ class MeetLocation extends Component {
             firebase.auth().onAuthStateChanged((myProfile) => {
                 if (myProfile) {
                     const uid = myProfile.uid;
+                    console.log(this.state)
 
                     firebase.database().ref('meetings/').child(uid).child(meetingPerson.uid).set({
                         VenueName: this.state.VenueName,
@@ -71,12 +72,11 @@ class MeetLocation extends Component {
                             pictures: myDetails.profilePicturesLink,
                             meetingDate: this.state.meetingDate,
                             meetingTime: this.state.meetingTime,
+                            placeLocation: this.state.directionsToPlace,
                             status: 'Pending',
                             senderUid: uid
 
-                        }, () => this.props.history.push('/Home')
-
-                        )
+                        },() => this.props.history.push('/Home'))
                     }
                     )
                 }
@@ -162,14 +162,22 @@ class MeetLocation extends Component {
             let VenueAdd = this.state.meetPlace[index].venue.location.formattedAddress[0] + "," + this.state.meetPlace[index].venue.location.formattedAddress[1]
             this.setState({
                 VenueName: this.state.meetPlace[index].venue.name,
-                VenueAdd: VenueAdd
+                VenueAdd: VenueAdd,
+                directionsToPlace: {
+                    latitude: this.state.meetPlace[index].venue.location.lat,
+                    longitude: this.state.meetPlace[index].venue.location.lng
+                } 
             })
         } else {
             this.TimeDialog.current.handleClickOpen();
             let VenueAdd = this.state.meetPlace[index].location.formattedAddress[0] + "," + this.state.meetPlace[index].location.formattedAddress[1]
             this.setState({
                 VenueName: this.state.meetPlace[index].name,
-                VenueAdd: VenueAdd
+                VenueAdd: VenueAdd,
+                directionsToPlace: {
+                    latitude: this.state.meetPlace[index].location.lat,
+                    longitude: this.state.meetPlace[index].location.lng
+                }
             })
         }
     }

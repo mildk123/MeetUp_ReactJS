@@ -36,7 +36,6 @@ class Requests extends Component {
         firebase.auth().onAuthStateChanged((myProfile) => {
             if (myProfile) {
                 firebase.database().ref().child('requests/').child(myProfile.uid).on('child_added', (callback) => {
-                    let key = callback.key
                     let data = callback.val()
                     let request = {
                         VenueAdd: data.VenueAdd,
@@ -45,7 +44,9 @@ class Requests extends Component {
                         meetingTime: data.meetingTime,
                         personName: data.personName,
                         pictures: data.pictures,
+                        placeLocation: data.placeLocation,
                         senderUid: data.senderUid,
+                        status : data.status
                     }
 
 
@@ -58,6 +59,13 @@ class Requests extends Component {
                 this.props.history.push('/')
             }
         })
+    }
+
+
+
+    getDirection = (index) => {
+        const placeLocation = this.state.requestsForMe[index].placeLocation;
+        
     }
 
     removeRequest = (arrayKey, senderUid) => {
@@ -145,6 +153,7 @@ class Requests extends Component {
 
                                 <Button 
                                 size="small" 
+                                onClick={() => this.getDirection(index)}
                                 variant="contained" 
                                 color="primary">
                                     Get Directions

@@ -62,13 +62,9 @@ class Direction extends Component {
       >
       <Button 
       color="secondary"
+      variant='contained'
       onClick={(myLocation, placeLocation) => this.getDirections(this.props.mylocation , this.props.placeLocation)} 
       >Get Directions
-      </Button>
-      <Button
-      // onClick={this.props.history.goBack}
-      >
-        Next
       </Button>
       </div>
     </div>

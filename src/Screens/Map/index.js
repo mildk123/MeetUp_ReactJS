@@ -28,6 +28,7 @@ class SelecLocation extends Component {
 
         this.showDrawer = React.createRef()
     }
+
     componentDidMount() {
         navigator.geolocation.getCurrentPosition(position => {
             this.setState({ coords: position.coords })
@@ -66,8 +67,10 @@ class SelecLocation extends Component {
             <Fragment>
                 <Drawer ref={this.showDrawer} props={this.props} />
 
+             
                 <NavBar Drawer={this.Drawer}  btnColor="secondary">Location</NavBar>
             <div>
+                
                 <Map updateCoords={this.updateCoords} coords={this.state.coords} />
                 
                 <div               
@@ -79,11 +82,8 @@ class SelecLocation extends Component {
                         padding: 5,
                         }}>
                     <Button 
-                    // style={{position: 'absolute', bottom: -10, left: 5}} 
-
-
                     size="large" 
-                    variant="extendedFab" 
+                    variant="contained" 
                     color="secondary" 
                     onClick={this.completedProfile}>All Done.
                     </Button>
