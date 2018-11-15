@@ -74,6 +74,8 @@ class Home extends Component {
                         }]
                     },() => this.checkDate())
                 })
+            }else{
+                this.props.history.push('/Authentication')
             }
         })
     }
@@ -100,14 +102,14 @@ class Home extends Component {
 
 
     fireQuestion = (key) => {
-        swal({
-            text: `Did you meet ${this.state.meetingList[key].meetingWith} ?`,
-            icon: "info",
-            buttons: ["No", "Yes"],
-            dangerMode: true,
-        })
+        if (this.state.meetingList[key].status !== 'Done'){
+            swal({
+                text: `Did you meet ${this.state.meetingList[key].meetingWith} ?`,
+                icon: "info",
+                buttons: ["No", "Yes"],
+                dangerMode: true,
+            })
             .then((yes) => {
-                console.log(this.state.meetingList)
                 let meetingPersonUid = (this.state.meetingList[key].key)
                 if (yes) {
                     this.props.onCurrentUserIndex(meetingPersonUid)
@@ -121,16 +123,14 @@ class Home extends Component {
                     },() => this.props.history.push('/Ratings'))
                 }
             });
-    }
-
-    startMeet = (userUid, arrayKey) => {
-        swal('Start Meet under construction!')
+        }
     }
 
     removeRequest = (userUid, arrayKey) => {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                firebase.database().ref().child('meetings').child(user.uid).child(userUid).remove()
+                database.child('meetings').child(user.uid).child(userUid).remove()
+                database.child('requests').child(userUid).child(user.uid).remove()
                 
                 let array = this.state.meetingList
                 array.splice(arrayKey, 1)
@@ -198,15 +198,6 @@ class Home extends Component {
                                 </CardContent>
                             </CardActionArea>
                             <CardActions>
-
-                                {item.status !== 'Cancelled' && <Button 
-                                size="small" 
-                                variant="contained" 
-                                color="secondary"
-                                onClick={() => this.startMeet(item.key, index)}
-                                >
-                                    Start
-                                </Button>}
 
                                 <Button 
                                 variant="contained" 

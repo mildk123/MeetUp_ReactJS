@@ -63,7 +63,7 @@ class MeetLocation extends Component {
                         meetingTime: this.state.meetingTime,
                         status: 'Pending'
                     }, (success) => {
-                        database.child('requests/').child(meetingPerson.uid).push({
+                        database.child('requests/').child(meetingPerson.uid).child(uid).set({
                             VenueName: this.state.VenueName,
                             VenueAdd: this.state.VenueAdd,
                             personName: myDetails.fullname,

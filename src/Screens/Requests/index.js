@@ -63,7 +63,7 @@ class Requests extends Component {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 firebase.database().ref().child('meetings').child(senderUid).child(user.uid).update({
-                    status: 'Cancelled'
+                    status: 'Request Declined'
                 })
                 firebase.database().ref().child('requests').child(user.uid).child(key).remove()
                 
