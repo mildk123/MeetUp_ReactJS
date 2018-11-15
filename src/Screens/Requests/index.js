@@ -10,6 +10,10 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 
+// Redux
+import { directionLocation } from '../../Redux/Actions/mapActions'
+import { connect } from 'react-redux'
+
 // Add to calender
 import AddCalendar from 'react-add-to-calendar'
 
@@ -46,10 +50,8 @@ class Requests extends Component {
                         pictures: data.pictures,
                         placeLocation: data.placeLocation,
                         senderUid: data.senderUid,
-                        status : data.status
+                        status: data.status
                     }
-
-
                     this.setState({
                         requestsForMe: [...this.state.requestsForMe, request]
                     })
@@ -65,7 +67,20 @@ class Requests extends Component {
 
     getDirection = (index) => {
         const placeLocation = this.state.requestsForMe[index].placeLocation;
-        
+
+        navigator.geolocation.getCurrentPosition((position) => {
+            const direction = {
+                myLocation : {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                },
+                placeLocation : placeLocation
+            }
+            this.props.onDirectionLocation(direction)
+            this.props.history.push('/ReqDirections')
+        })
+
+
     }
 
     removeRequest = (arrayKey, senderUid) => {
@@ -75,7 +90,7 @@ class Requests extends Component {
                     status: 'Request Declined'
                 })
                 firebase.database().ref().child('requests').child(user.uid).child(senderUid).remove()
-                
+
                 let array = this.state.requestsForMe
                 array.splice(arrayKey, 1)
                 this.setState({
@@ -88,25 +103,25 @@ class Requests extends Component {
         });
     }
 
-    addToDash = (arrayKey, senderUid) =>{
+    addToDash = (arrayKey, senderUid) => {
 
         console.log(arrayKey, senderUid)
         let myUid = firebase.auth().currentUser.uid
 
         let oldRef = database.child('requests').child(myUid).child(senderUid)
         let newRef = database.child('meetings').child(myUid).child(senderUid)
-            oldRef.once('value', (snap) =>  {
-                 newRef.set( snap.val(),(error) => {
-                      if( !error ) {
-                            oldRef.remove();
-                            this.props.history.push('/Home')
-                        }
-                      else if( typeof(console) !== 'undefined' && console.error ) 
-                      {  console.error(error); 
-                    }
-                 });
+        oldRef.once('value', (snap) => {
+            newRef.set(snap.val(), (error) => {
+                if (!error) {
+                    oldRef.remove();
+                    this.props.history.push('/Home')
+                }
+                else if (typeof (console) !== 'undefined' && console.error) {
+                    console.error(error);
+                }
             });
-       
+        });
+
     }
 
 
@@ -121,15 +136,15 @@ class Requests extends Component {
 
                 <div>
                     {this.state.requestsForMe.map((item, index) => {
-                        return <Card 
-                        key={index}
-                        style={{
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            marginTop: '2%',
-                            maxWidth: '520px',
-                            width: '95vw'
-                        }}>
+                        return <Card
+                            key={index}
+                            style={{
+                                marginLeft: 'auto',
+                                marginRight: 'auto',
+                                marginTop: '2%',
+                                maxWidth: '520px',
+                                width: '95vw'
+                            }}>
                             <CardActionArea>
                                 <CardMedia
                                     style={{
@@ -151,37 +166,37 @@ class Requests extends Component {
                             </CardActionArea>
                             <CardActions>
 
-                                <Button 
-                                size="small" 
-                                onClick={() => this.getDirection(index)}
-                                variant="contained" 
-                                color="primary">
+                                <Button
+                                    size="small"
+                                    onClick={() => this.getDirection(index)}
+                                    variant="contained"
+                                    color="primary">
                                     Get Directions
                                 </Button>}
 
-                                <Button 
-                                size="small" 
-                                variant="contained" 
-                                color="primary">
+                                <Button
+                                    size="small"
+                                    variant="contained"
+                                    color="primary">
                                     <AddCalendar />
                                 </Button>
 
-                                <Button 
-                                variant="contained" 
-                                onClick={() => this.removeRequest(index, item.senderUid)} 
-                                size="small" 
-                                color="secondary">
+                                <Button
+                                    variant="contained"
+                                    onClick={() => this.removeRequest(index, item.senderUid)}
+                                    size="small"
+                                    color="secondary">
                                     Delete
                                 </Button>
 
-                                <Button 
-                                variant="contained" 
-                                onClick={() => this.addToDash(index, item.senderUid)} 
-                                size="small" 
-                                color="secondary">
+                                <Button
+                                    variant="contained"
+                                    onClick={() => this.addToDash(index, item.senderUid)}
+                                    size="small"
+                                    color="secondary">
                                     Add to Dash
                                 </Button>
-                                
+
 
 
                             </CardActions>
@@ -196,4 +211,14 @@ class Requests extends Component {
     }
 }
 
-export default Requests;
+const mapStateToProps = (state, props) => {
+    return {
+        state
+    }
+}
+
+const mapDispatchToProps = {
+    onDirectionLocation: directionLocation
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Requests)

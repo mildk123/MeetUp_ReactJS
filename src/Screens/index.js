@@ -16,6 +16,8 @@ import SelectMeet from './SelectMeet/index';
 import meetLocation from './SelectMeet/MeetLocation.jsx'
 import Directions from './SelectMeet/Directions'
 
+import ReqDirections from './Requests/reqDirections'
+
 import Requests from './Requests';
 import Edit from './Edit';
 
@@ -69,6 +71,7 @@ class Routes extends React.Component {
                         <Route path="/Edit" component={Edit} />
 
                         <Route path="/getDirections" component={Directions} />
+                        <Route path="/reqDirections" component={ReqDirections} />
                     </Switch>
 
                 </div>

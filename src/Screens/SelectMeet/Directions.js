@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button'
 import swal from 'sweetalert'
+
 const { withScriptjs, withGoogleMap, GoogleMap, DirectionsRenderer, Marker } = require("react-google-maps");
 
 class Direction extends Component {
@@ -37,7 +38,10 @@ class Direction extends Component {
   }
 
 
+
+
   render() {
+      console.log(this.props)
     return <div>
       <MyMapComponent
         isMarkerShown={true}
@@ -87,7 +91,5 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) =>
 
   </GoogleMap>
 ))
-
-
 
 export default Direction;
