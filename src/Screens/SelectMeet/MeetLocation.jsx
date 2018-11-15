@@ -61,6 +61,7 @@ class MeetLocation extends Component {
                         pictures: meetingPerson.pictures,
                         meetingDate: this.state.meetingDate,
                         meetingTime: this.state.meetingTime,
+                        recieverUid : meetingPerson.uid,
                         status: 'Pending'
                     }, (success) => {
                         database.child('requests/').child(meetingPerson.uid).child(uid).set({
@@ -70,6 +71,7 @@ class MeetLocation extends Component {
                             pictures: myDetails.profilePicturesLink,
                             meetingDate: this.state.meetingDate,
                             meetingTime: this.state.meetingTime,
+                            status: 'Pending',
                             senderUid: uid
 
                         }, () => this.props.history.push('/Home')

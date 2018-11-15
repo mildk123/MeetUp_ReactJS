@@ -15,6 +15,8 @@ import AddCalendar from 'react-add-to-calendar'
 
 import firebase from '../../Config/firebase'
 
+const database = firebase.database().ref()
+
 class Requests extends Component {
     constructor(props) {
         super(props);
@@ -44,7 +46,6 @@ class Requests extends Component {
                         personName: data.personName,
                         pictures: data.pictures,
                         senderUid: data.senderUid,
-                        key : key
                     }
 
 
@@ -59,13 +60,13 @@ class Requests extends Component {
         })
     }
 
-    removeRequest = (key, arrayKey, senderUid) => {
+    removeRequest = (arrayKey, senderUid) => {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 firebase.database().ref().child('meetings').child(senderUid).child(user.uid).update({
                     status: 'Request Declined'
                 })
-                firebase.database().ref().child('requests').child(user.uid).child(key).remove()
+                firebase.database().ref().child('requests').child(user.uid).child(senderUid).remove()
                 
                 let array = this.state.requestsForMe
                 array.splice(arrayKey, 1)
@@ -79,6 +80,26 @@ class Requests extends Component {
         });
     }
 
+    addToDash = (arrayKey, senderUid) =>{
+
+        console.log(arrayKey, senderUid)
+        let myUid = firebase.auth().currentUser.uid
+
+        let oldRef = database.child('requests').child(myUid).child(senderUid)
+        let newRef = database.child('meetings').child(myUid).child(senderUid)
+            oldRef.once('value', (snap) =>  {
+                 newRef.set( snap.val(),(error) => {
+                      if( !error ) {
+                            oldRef.remove();
+                            this.props.history.push('/Home')
+                        }
+                      else if( typeof(console) !== 'undefined' && console.error ) 
+                      {  console.error(error); 
+                    }
+                 });
+            });
+       
+    }
 
 
     render() {
@@ -122,21 +143,36 @@ class Requests extends Component {
                             </CardActionArea>
                             <CardActions>
 
-                                <Button size="small" variant="outlined" color="primary">
+                                <Button 
+                                size="small" 
+                                variant="contained" 
+                                color="primary">
                                     Get Directions
                                 </Button>}
 
-                                <Button size="small" variant="outlined" color="primary">
+                                <Button 
+                                size="small" 
+                                variant="contained" 
+                                color="primary">
                                     <AddCalendar />
                                 </Button>
 
                                 <Button 
-                                variant="outlined" 
-                                onClick={() => this.removeRequest(item.key, index, item.senderUid)} 
+                                variant="contained" 
+                                onClick={() => this.removeRequest(index, item.senderUid)} 
                                 size="small" 
-                                color="primary">
+                                color="secondary">
                                     Delete
                                 </Button>
+
+                                <Button 
+                                variant="contained" 
+                                onClick={() => this.addToDash(index, item.senderUid)} 
+                                size="small" 
+                                color="secondary">
+                                    Add to Dash
+                                </Button>
+                                
 
 
                             </CardActions>
